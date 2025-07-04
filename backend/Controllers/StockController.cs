@@ -50,26 +50,57 @@ namespace backend.Controllers
 
             return Ok(stockDto);
         }
-      [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
-    {
-  try
-  {
-          var stockModel = stockDto.ToStockFromCreateDTO();
-          Console.WriteLine(stockModel.Id);
-          _context.Stocks.Add(stockModel);
-          await _context.SaveChangesAsync();
-  
-          return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
-  }
- catch (Exception ex)
-{
-    Console.WriteLine("💥 Exception: " + ex);
-    return StatusCode(500, "Something went wrong: " + ex.Message);
-}
-    }
-        
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
+        {
+            try
+            {
+                var stockModel = stockDto.ToStockFromCreateDTO();
+                Console.WriteLine(stockModel.Id);
+                _context.Stocks.Add(stockModel);
+                await _context.SaveChangesAsync();
 
+                return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("💥 Exception: " + ex);
+                return StatusCode(500, "Something went wrong: " + ex.Message);
+            }
+        }
+
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateDto([FromRoute] int id, [FromBody] UpdateStockDTORequests dto)
+        {
+            try
+            {
+                var stock = await _context.Stocks.FindAsync(id);
+                if (stock == null)
+                    return NotFound();
+                stock.UpdateStockFromDTO(dto);
+                await _context.SaveChangesAsync();
+                return Ok(stock.ToStockDto());
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("💥 Exception: " + ex);
+                return StatusCode(500, "Something went wrong: " + ex.Message);
+            }
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStock([FromRoute] int id)
+    {
+        var stock = await _context.Stocks.FindAsync(id);
+        if (stock == null)
+            return NotFound("particulaa stock not found");
+
+        _context.Stocks.Remove(stock); // ✅ EF Core way to delete
+        await _context.SaveChangesAsync();
+
+        return Ok("Stock deleted successfully."); // ✅ Response
+    }
 
     }
 }

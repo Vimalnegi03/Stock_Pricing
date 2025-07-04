@@ -37,6 +37,17 @@ namespace backend.Mappers
 
 
             };
-       } 
+        }
+
+       public static void UpdateStockFromDTO(this Stock stock, UpdateStockDTORequests dto)
+{
+    if (dto.Symbol != null) stock.Symbol = dto.Symbol;
+    if (dto.CompanyName != null) stock.CompanyName = dto.CompanyName;
+    if (dto.Purchase.HasValue) stock.Purchase = dto.Purchase.Value;
+    if (dto.LastDiv.HasValue) stock.LastDiv = dto.LastDiv.Value;
+    if (dto.Industry != null) stock.Industry = dto.Industry;
+    if (dto.MarketCap.HasValue) stock.MarketCap = dto.MarketCap.Value;
+}
+
     }
 }
