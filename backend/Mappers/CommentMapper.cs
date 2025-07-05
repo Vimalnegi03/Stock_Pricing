@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.DTOs.Comment;
 using backend.Models;
 using backend.StockData;
 
@@ -20,7 +21,25 @@ namespace backend.Mappers
                 CreatedOn = comment.CreatedOn,
             };
         }
-
+        public static Comment CreateCommentToComment(this CreateCommentDto comment)
+        {
+            return new Comment
+            {
+                Content = comment.Content,
+                Title = comment.Title,
+              
+            };
+        } 
+       public static Comment UpdateCommentToComment(this UpdateCommentDTo comment)
+        {
+            return new Comment
+            {
+                
+                Content = comment?.Content,
+                Title = comment?.Title,
+              
+            };
+        } 
        
     }
 }

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.data;
+using backend.DTOs.Comment;
 using backend.Interfaces;
+using backend.Mappers;
 using backend.Models;
+using backend.StockData;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repository
@@ -16,14 +19,30 @@ namespace backend.Repository
         {
             _context = context;
         }
-        public Task<Comment> CreateComment(Comment comment)
+
+        public async Task<Comment> CreateComment(int id, CreateCommentDto dto)
         {
-            throw new NotImplementedException();
+            var stocks = await _context.Stocks.FindAsync(id);
+            if (stocks == null)
+                return null;
+
+            var comment = dto.CreateCommentToComment();
+            comment.StockId = id;
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+            return comment;
         }
 
-        public Task<Comment> DeleteComment(int id)
+        public async Task<Comment> DeleteComment(int id)
         {
-            throw new NotImplementedException();
+            var Comment = await _context.Comments.FindAsync(id);
+            if (Comment == null)
+            {
+                return null;
+            }
+            _context.Comments.Remove(Comment);
+            await _context.SaveChangesAsync();
+            return Comment;
         }
 
         public async Task<List<Comment>> GetAllComments()
@@ -36,9 +55,22 @@ namespace backend.Repository
             return await _context.Comments.FindAsync(id);
         }
 
-        public Task<Comment?> UpdateComment(int id, Comment comment)
+        public async Task<Comment?> UpdateComment(int id, UpdateCommentDTo dto)
         {
-            throw new NotImplementedException();
+            var comment = _context.Comments.Find(id);
+            if (comment == null)
+                return null;
+            if (dto.Title != null)
+            {
+                comment.Title = dto.Title;
+            }
+            if (dto.Content != null)
+            {
+                comment.Content = dto.Content;
+            }
+
+            await _context.SaveChangesAsync();
+            return comment;
         }
     }
 }
