@@ -1,4 +1,6 @@
 using backend.data;
+using backend.Interfaces;
+using backend.Repository;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+builder.Services.AddScoped<IStockRepository, StockRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
