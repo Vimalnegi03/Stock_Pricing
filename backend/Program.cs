@@ -1,7 +1,9 @@
+using System.Security.Cryptography.Xml;
 using backend.data;
 using backend.Interfaces;
 using backend.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

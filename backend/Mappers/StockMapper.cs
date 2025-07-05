@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using backend.DTOs.Stock;
 using backend.DTOs.StockData;
 using backend.Models;
+using backend.StockData;
 
 namespace backend.Mappers
 {
@@ -21,6 +22,9 @@ namespace backend.Mappers
                 LastDiv = stockModel.LastDiv,
                 Industry = stockModel.Industry,
                 MarketCap = stockModel.MarketCap,
+               Comments = stockModel.Comments?
+    .Select(s => s.CommentToCommentDto())
+    .ToList()
 
             };
         }
