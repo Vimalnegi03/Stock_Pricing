@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.data;
 using backend.DTOs.StockData;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Models;
@@ -37,10 +38,18 @@ namespace backend.Repository
 
     return stock; // ✅ return the deleted entity
 }
-        public Task<List<Stock>> GetAllAsync()
+        public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            return _context.Stocks.Include(c=>c.Comments)
-                 .ToListAsync();
+            var stocks = _context.Stocks.Include(c => c.Comments).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+            return await stocks.ToListAsync();
         }
 
       public async Task<Stock?> GetByIdAsync(int id)

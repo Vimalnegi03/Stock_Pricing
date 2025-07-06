@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.data;
 using backend.DTOs.StockData;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Models;
@@ -24,13 +25,13 @@ namespace backend.Controllers
             _repository = repository;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
               if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var stocks = await _repository.GetAllAsync();
+            var stocks = await _repository.GetAllAsync(query);
             var stocksDto = stocks.Select(s => s.ToStockDto());
 
             if (stocksDto == null)
