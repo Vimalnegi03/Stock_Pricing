@@ -26,6 +26,10 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+              if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var stocks = await _repository.GetAllAsync();
             var stocksDto = stocks.Select(s => s.ToStockDto());
 
@@ -38,9 +42,13 @@ namespace backend.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+              if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null)
             {
                 return BadRequest("please enter an id");
@@ -58,6 +66,10 @@ namespace backend.Controllers
        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
+              if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var stockModel = stockDto.ToStockFromCreateDTO();
@@ -76,24 +88,32 @@ namespace backend.Controllers
 
 
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:int}")]
             public async Task<IActionResult> UpdateDto([FromRoute] int id, [FromBody] UpdateStockDTORequests dto)
             {
-                try
-                {
-                    var stock = await _repository.UpdateAsync(id, dto);
-                    return Ok(stock.ToStockDto());
-                }
-                catch (Exception ex)
-                {
-
-                    Console.WriteLine("💥 Exception: " + ex);
-                    return StatusCode(500, "Something went wrong: " + ex.Message);
-                }
+                  if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
-            [HttpDelete("{id}")]
+                try
+            {
+                var stock = await _repository.UpdateAsync(id, dto);
+                return Ok(stock.ToStockDto());
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("💥 Exception: " + ex);
+                return StatusCode(500, "Something went wrong: " + ex.Message);
+            }
+            }
+            [HttpDelete("{id:int}")]
             public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
+              if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
                 await _repository.DeleteByIdAsync(id);
 

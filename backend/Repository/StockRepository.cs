@@ -53,6 +53,31 @@ namespace backend.Repository
             var stock = await _context.Stocks.FindAsync(id);
             if (stock == null)
                 return null;
+            if (stockDto.Symbol != null)
+            {
+                    stock.Symbol = stockDto.Symbol;
+                }
+            if (stockDto.CompanyName != null)
+            {
+                    stock.CompanyName = stockDto.CompanyName;
+                }
+            if (stockDto.Purchase!=null)
+            {
+                stock.Purchase = (decimal)stockDto.Purchase;
+                }
+            if (stockDto.MarketCap != null)
+            {
+                    stock.MarketCap = (long)stockDto.MarketCap;
+                }
+            if (stockDto.LastDiv != null)
+            {
+                    stock.LastDiv = (decimal)stockDto.LastDiv;
+                }
+            if (stockDto.Industry != null)
+            {
+                    stock.Industry = stockDto.Industry;
+                }
+
             stock.UpdateStockFromDTO(stockDto);
             await _context.SaveChangesAsync();
             return stock;
