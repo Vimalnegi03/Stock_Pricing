@@ -8,6 +8,7 @@ using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,9 +26,10 @@ namespace backend.Controllers
             _repository = repository;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-              if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
