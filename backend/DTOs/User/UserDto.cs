@@ -10,10 +10,11 @@ namespace backend.DTOs.User
     public class UserDTO
     {
         [Required]
-        public string UserName { get; set; }
+        public string ? UserName { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string ? Password { get; set; }
         [Required]
-        public string Email { get; set; }
+        [EmailAddress]
+        public string ? Email { get; set; }
     }
 }
