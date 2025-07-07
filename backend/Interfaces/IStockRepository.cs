@@ -15,5 +15,6 @@ namespace backend.Interfaces
         Task<Stock> Create(Stock stockModel);
         Task<Stock?> UpdateAsync(int id, UpdateStockDTORequests stockDto);
         Task<Stock?> DeleteByIdAsync(int id);
+        Task<Stock?> GetBySymbolAsync(string symbol);
     }
 }
