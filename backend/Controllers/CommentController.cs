@@ -7,6 +7,7 @@ using backend.DTOs.Comment;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.StockData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -22,6 +23,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetComment()
         {
             if (!ModelState.IsValid)
@@ -38,6 +40,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetCommentById([FromRoute] int id)
         {
               if (!ModelState.IsValid)
@@ -52,6 +55,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> CreateCommentt([FromRoute] int id, [FromBody] CreateCommentDto dTO)
         {
               if (!ModelState.IsValid)
@@ -65,6 +69,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCommentt([FromRoute] int id)
         {
               if (!ModelState.IsValid)
@@ -80,9 +85,10 @@ namespace backend.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdateCommentt([FromRoute] int id, [FromBody] UpdateCommentDTo dTO)
         {
-              if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

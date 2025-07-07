@@ -46,6 +46,7 @@ namespace backend.Controllers
 
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
               if (!ModelState.IsValid)
@@ -67,6 +68,7 @@ namespace backend.Controllers
         }
         
        [HttpPost]
+       [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
               if (!ModelState.IsValid)
@@ -92,6 +94,7 @@ namespace backend.Controllers
 
 
         [HttpPatch("{id:int}")]
+        [Authorize]
             public async Task<IActionResult> UpdateDto([FromRoute] int id, [FromBody] UpdateStockDTORequests dto)
             {
                   if (!ModelState.IsValid)
@@ -111,6 +114,7 @@ namespace backend.Controllers
             }
             }
             [HttpDelete("{id:int}")]
+            [Authorize]
             public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
               if (!ModelState.IsValid)
