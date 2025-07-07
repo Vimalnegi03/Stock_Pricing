@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using backend.DTOs.Comment;
+using backend.Extension;
 using backend.Interfaces;
 using backend.Mappers;
+using backend.Models;
 using backend.StockData;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -17,9 +20,14 @@ namespace backend.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _repository;
-        public CommentController(ICommentRepository repository)
+        private readonly IStockRepository _stockRepo;
+        private readonly UserManager<AppUser> _userManager;
+        public CommentController(ICommentRepository repository, IStockRepository stockRepo, UserManager<AppUser> userManager)
         {
             _repository = repository;
+            _stockRepo = stockRepo;
+            _userManager = userManager;
+
         }
 
         [HttpGet]
@@ -62,9 +70,13 @@ namespace backend.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var username = User.GetUsername();
+            var _appUser = await _userManager.FindByNameAsync(username);
             var data = await _repository.CreateComment(id, dTO);
+
             if (data == null)
                 return BadRequest("Something went wrong");
+            data.AppUserId = _appUser.Id;
             return Ok(data.CommentToCommentDto());
         }
 

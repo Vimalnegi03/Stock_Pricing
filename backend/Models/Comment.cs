@@ -16,7 +16,8 @@ namespace backend.Models
         public Stock? Stock { get; set; } //Navigating property allow us to explore stocks
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
-
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
 
 
 

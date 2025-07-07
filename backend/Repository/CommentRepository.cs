@@ -47,12 +47,12 @@ namespace backend.Repository
 
         public async Task<List<Comment>> GetAllComments()
         {
-            return await _context.Comments.ToListAsync();
+            return await _context.Comments.Include(a=>a.AppUser).ToListAsync();
         }
 
         public async Task<Comment?> GetById(int id)
         {
-            return await _context.Comments.FindAsync(id);
+            return await _context.Comments.Include(a=>a.AppUser).FirstOrDefaultAsync(c=>c.Id == id);
         }
 
         public async Task<Comment?> UpdateComment(int id, UpdateCommentDTo dto)
