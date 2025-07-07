@@ -1,6 +1,6 @@
 # 🦈 Stock_Pricing
 
-![Homepage](FinShark-master/homepage.png)
+![Homepage](Stock_Pricing/homepage.png)
 
 **FinShark** is a robust and modern financial web application that allows users to track, analyze, and manage stock market investments. Built with ASP.NET Core Web API, it provides secure user authentication, portfolio management, real-time stock data integration, and interactive commenting features.
 
